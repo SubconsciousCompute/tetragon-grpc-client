@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  tetragon:
+    image: quay.io/cilium/tetragon:v1.0.0
+    # command: /usr/bin/tetragon --server-address unix:///var/run/tetragon/tetragon.sock
+    command: /usr/bin/tetragon
+    privileged: true
+    pid: host
+    ports:
+      - "54321:54321"
+    volumes:
+      - /etc/tetragon:/etc/tetragon
+      - /sys/kernel:/sys/kernel
+      - /var/log/tetragon:/var/log/tetragon
+      - ./tetragon.sock:/var/run/tetragon/tetragon.sock
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
