@@ -2,7 +2,8 @@
 
 ## Demo
 
-[![asciicast](https://asciinema.org/a/646726.svg)](https://asciinema.org/a/646726)
+![demo](https://github.com/Aditeya/tetragon-grpc-client/assets/22963960/2e9b5429-248a-4d0b-94ce-88156aa4eb76)
+
 
 ## Cloning
 
