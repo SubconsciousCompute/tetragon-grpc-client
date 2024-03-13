@@ -3,12 +3,8 @@ use tonic::transport::{Channel, Endpoint, Uri};
 use tower::service_fn;
 use tracing_subscriber::FmtSubscriber;
 
-use crate::tetragon::fine_guidance_sensors_client::FineGuidanceSensorsClient;
-use crate::tetragon::{Filter, GetEventsRequest};
-
-pub mod tetragon {
-    tonic::include_proto!("tetragon");
-}
+use tetragon_grpc::fine_guidance_sensors_client::FineGuidanceSensorsClient;
+use tetragon_grpc::{Filter, GetEventsRequest};
 
 pub async fn http_client(
     uri: &'static str,
@@ -45,6 +41,9 @@ pub async fn socket_client(
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let my_subscriber = FmtSubscriber::new();
     tracing::subscriber::set_global_default(my_subscriber).expect("setting tracing default failed");
+
+    // NOTE: get root
+    sudo::escalate_if_needed()?;
 
     // NOTE: client via http
     // let mut client = socket_client("http://0.0.0.0:54321").await?;

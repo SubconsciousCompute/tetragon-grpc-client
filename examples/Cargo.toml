@@ -1,0 +1,21 @@
+[package]
+name = "examples"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "getevents"
+path = "getevents.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tetragon-grpc = { path = "../tetragon-grpc" }
+tonic = "0.11"
+prost = "0.12"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+prost-types = "0.12.3"
+tower = "0.4.13"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+sudo = "0.6"

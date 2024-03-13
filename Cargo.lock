@@ -190,6 +190,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "examples"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "prost-types",
+ "sudo",
+ "tetragon-grpc",
+ "tokio",
+ "tonic",
+ "tower",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -804,6 +819,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sudo"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "88bd84d4c082e18e37fef52c0088e4407dabcef19d23a607fb4b5ee03b7d5b83"
+dependencies = [
+ "libc",
+ "log",
+]
+
+[[package]]
 name = "syn"
 version = "2.0.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -833,7 +858,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tetragon-grpc-client"
+name = "tetragon-grpc"
 version = "0.1.0"
 dependencies = [
  "prost",
