@@ -4,23 +4,25 @@ use tower::service_fn;
 use tracing_subscriber::FmtSubscriber;
 
 use crate::tetragon::fine_guidance_sensors_client::FineGuidanceSensorsClient;
-use crate::tetragon::{AggregationOptions, GetEventsRequest, GetEventsResponse};
+use crate::tetragon::{Filter, GetEventsRequest};
 
 pub mod tetragon {
     tonic::include_proto!("tetragon");
 }
 
-pub async fn http_client() -> Result<FineGuidanceSensorsClient<Channel>, Box<dyn std::error::Error>>
-{
+pub async fn http_client(
+    uri: &'static str,
+) -> Result<FineGuidanceSensorsClient<Channel>, Box<dyn std::error::Error>> {
     tracing::info!("Creating Channel");
-    let channel = Endpoint::try_from("http://0.0.0.0:54321")?;
+    let channel = Endpoint::try_from(uri)?;
 
-    tracing::info!("Done\nCreating Client");
+    tracing::info!("Creating Client");
     let client = FineGuidanceSensorsClient::connect(channel).await?;
     Ok(client)
 }
 
 pub async fn socket_client(
+    path: &'static str,
 ) -> Result<FineGuidanceSensorsClient<Channel>, Box<dyn std::error::Error>> {
     tracing::info!("Creating Channel");
     // NOTE: We will ignore this uri because uds do not use it
@@ -28,15 +30,13 @@ pub async fn socket_client(
     // as the request to the `MakeConnection`.
     // The url is the default address used for tetragon gRPC.
     let channel = Endpoint::try_from("http://0.0.0.0:54321")?
-        .connect_with_connector(service_fn(|_: Uri| {
-            let path = "/var/run/tetragon/tetragon.sock";
-
+        .connect_with_connector(service_fn(move |_: Uri| {
             // Connect to a Uds socket
             UnixStream::connect(path)
         }))
         .await?;
 
-    tracing::info!("Done\nCreating Client");
+    tracing::info!("Creating Client");
     let client = FineGuidanceSensorsClient::new(channel);
     Ok(client)
 }
@@ -44,28 +44,28 @@ pub async fn socket_client(
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let my_subscriber = FmtSubscriber::new();
-    tracing::subscriber::set_global_default(my_subscriber)
-        .expect("setting tracing default failed");
+    tracing::subscriber::set_global_default(my_subscriber).expect("setting tracing default failed");
 
-    tracing::info!("test");
-    tracing::info!("Creating Client");
-    // let mut client = socket_client().await?;
-    let mut client = socket_client().await?;
+    // NOTE: client via http
+    // let mut client = socket_client("http://0.0.0.0:54321").await?;
+    // NOTE: client via socket
+    let mut client = socket_client("/var/run/tetragon/tetragon.sock").await?;
 
-    tracing::info!("Done\nCreating Request");
+    tracing::info!("Creating Request");
+    // NOTE: creating a request for getevents
     let request = tonic::Request::new(GetEventsRequest {
-        aggregation_options: Some(AggregationOptions {
-            window_size: None,
-            channel_buffer_size: u64::MAX,
-        }),
+        allow_list: vec![Filter::default()],
         ..Default::default()
     });
 
-    tracing::info!("Done\nSending Request");
+    tracing::info!("Sending Request");
+    // NOTE: running the request
     let mut response = client.get_events(request).await?;
-    tracing::info!("Success!\nPrinting Response:\n");
+
+    tracing::info!("Success! Printing Response:");
+    // NOTE: reading the stream for events
     while let Ok(Some(t)) = response.get_mut().message().await {
-        tracing::info!("{t:#?}");
+        tracing::info!("{t:?}");
     }
 
     Ok(())
