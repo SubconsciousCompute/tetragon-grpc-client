@@ -10,7 +10,7 @@ The proto directory is a symlink to the `tetragon/api/v1` folder. The tetragon d
 
 ## Running Example
 
-> *NOTE:* Requires Root 
+> *NOTE:* Requires Root. The program will ask for sudo password.
 
 ```sh 
 $ cargo run --bin getevents
