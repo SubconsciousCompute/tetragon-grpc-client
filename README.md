@@ -1,5 +1,9 @@
 # tetragon-grpc-client
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/646726.svg)](https://asciinema.org/a/646726)
+
 ## Cloning
 
 ```sh
