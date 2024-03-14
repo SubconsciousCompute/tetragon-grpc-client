@@ -1,6 +1,6 @@
 //! Mimics `tetra --server-address unix:///var/run/tetragon/tetragon.sock getevents`
 //!
-//! Author: Aditeya Govind <aditeya.g@subcom.tech>
+//! Author: Aditeya V. Govind <aditeya.vg@subcom.tech>
 
 use tokio::net::UnixStream;
 use tonic::transport::{Channel, Endpoint, Uri};
