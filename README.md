@@ -24,3 +24,8 @@ This demo mimic command `sudo tetra --server-address unix:///var/run/tetragon/te
 ```sh
 $ cargo run
 ```
+
+## Troubleshooting
+
+If you're requests aren't happening as you expect, try checking the [tetra cli code](https://github.com/cilium/tetragon/blob/main/cmd/tetra/main.go)
+and how they create their request objects.
