@@ -1,3 +1,0 @@
-[submodule "tetragon"]
-	path = tetragon
-	url = https://github.com/cilium/tetragon.git
