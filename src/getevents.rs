@@ -24,7 +24,9 @@ impl EventsSubscriber {
 
     /// Run the subscriber.
     pub fn run(&mut self) -> anyhow::Result<()> {
-        let mut client = Self::socket_client(self.socket_path.clone())?;
+        let rt = tokio::runtime::Runtime::new().unwrap();
+
+        let mut client = Self::socket_client(self.socket_path.clone(), rt.handle())?;
         // NOTE: creating a request for getevents
         let request = tonic::Request::new(GetEventsRequest {
             allow_list: vec![Filter::default()],
@@ -32,9 +34,9 @@ impl EventsSubscriber {
         });
 
         tracing::info!("Sending Request");
-        let mut response = block_on(client.get_events(request))?;
+        let mut response = rt.block_on(client.get_events(request))?;
 
-        while let Ok(Some(t)) = block_on(response.get_mut().message()) {
+        while let Ok(Some(t)) = rt.block_on(response.get_mut().message()) {
             if let Err(e) = self.tx.try_send(t) {
                 tracing::info!("failed to send event: {e}");
             }
@@ -44,13 +46,16 @@ impl EventsSubscriber {
     }
 
     /// Unix domain socket client
-    fn socket_client(path: PathBuf) -> anyhow::Result<FineGuidanceSensorsClient<Channel>> {
+    fn socket_client(
+        path: PathBuf,
+        rt: &tokio::runtime::Handle,
+    ) -> anyhow::Result<FineGuidanceSensorsClient<Channel>> {
         tracing::info!("Creating socket channel");
 
         // NOTE: We will ignore this uri because uds do not use it
         // if your connector does use the uri it will be provided
         // as the request to the `MakeConnection`.
-        let channel = block_on(
+        let channel = rt.block_on(
             Endpoint::try_from("http://0.0.0.0:9999")?.connect_with_connector(service_fn(
                 move |_: Uri| {
                     // Connect to a Uds socket
