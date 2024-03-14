@@ -4,7 +4,7 @@ How to use tetragon grpc server in Rust!
 
 ## Demo
 
-_This may be outdated._
+_This may be outdated. `cargo run` should launch the demo._
 
 ![demo](https://github.com/Aditeya/tetragon-grpc-client/assets/22963960/2e9b5429-248a-4d0b-94ce-88156aa4eb76)
 
