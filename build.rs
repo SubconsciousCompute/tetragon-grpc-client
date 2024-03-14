@@ -1,13 +1,13 @@
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     match tonic_build::configure().build_server(false).compile(
         &[
-            "../proto/tetragon/capabilities.proto",
-            "../proto/tetragon/tetragon.proto",
-            "../proto/tetragon/stack.proto",
-            "../proto/tetragon/events.proto",
-            "../proto/tetragon/sensors.proto",
+            "./proto_v1/tetragon/capabilities.proto",
+            "./proto_v1/tetragon/tetragon.proto",
+            "./proto_v1/tetragon/stack.proto",
+            "./proto_v1/tetragon/events.proto",
+            "./proto_v1/tetragon/sensors.proto",
         ],
-        &["../proto"],
+        &["./proto_v1"],
     ) {
         Ok(_) => Ok(()),
         Err(e) => {

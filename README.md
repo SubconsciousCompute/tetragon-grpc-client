@@ -1,15 +1,28 @@
-# tetragon-grpc-client
+# tetragon-grpc demo
+
+How to use tetragon grpc server in Rust!
 
 ## Demo
 
+_This may be outdated._
+
 ![demo](https://github.com/Aditeya/tetragon-grpc-client/assets/22963960/2e9b5429-248a-4d0b-94ce-88156aa4eb76)
 
-## Running Example
+
+## Cloning
+
+```sh
+git clone https://github.com/SubconsciousCompute/tetragon-grpc-client.git
+```
+
+# Running demo
+
+This demo mimic command `sudo tetra --server-address unix:///var/run/tetragon/tetragon.sock getevents`
 
 > *NOTE:* Requires Root. The program will ask for sudo password.
 
-```sh 
-$ cargo run --bin getevents
+```sh
+$ cargo run
 ```
 
 ## Troubleshooting

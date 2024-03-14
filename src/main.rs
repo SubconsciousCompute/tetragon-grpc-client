@@ -1,3 +1,7 @@
+//! Mimics `tetra --server-address unix:///var/run/tetragon/tetragon.sock getevents`
+//!
+//! Author: Aditeya V. Govind <aditeya.vg@subcom.tech>
+
 use tokio::net::UnixStream;
 use tonic::transport::{Channel, Endpoint, Uri};
 use tower::service_fn;
@@ -6,10 +10,11 @@ use tracing_subscriber::FmtSubscriber;
 use tetragon_grpc::fine_guidance_sensors_client::FineGuidanceSensorsClient;
 use tetragon_grpc::{Filter, GetEventsRequest};
 
+/// Http client
 pub async fn http_client(
     uri: &'static str,
 ) -> Result<FineGuidanceSensorsClient<Channel>, Box<dyn std::error::Error>> {
-    tracing::info!("Creating Channel");
+    tracing::info!("Creating HTTP channel");
     let channel = Endpoint::try_from(uri)?;
 
     tracing::info!("Creating Client");
@@ -17,10 +22,11 @@ pub async fn http_client(
     Ok(client)
 }
 
+/// Unix domain socket client
 pub async fn socket_client(
     path: &'static str,
 ) -> Result<FineGuidanceSensorsClient<Channel>, Box<dyn std::error::Error>> {
-    tracing::info!("Creating Channel");
+    tracing::info!("Creating socket channel");
     // NOTE: We will ignore this uri because uds do not use it
     // if your connector does use the uri it will be provided
     // as the request to the `MakeConnection`.
@@ -32,7 +38,7 @@ pub async fn socket_client(
         }))
         .await?;
 
-    tracing::info!("Creating Client");
+    tracing::info!("Creating socket client");
     let client = FineGuidanceSensorsClient::new(channel);
     Ok(client)
 }
