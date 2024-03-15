@@ -3,7 +3,6 @@
 use crate::fine_guidance_sensors_client::FineGuidanceSensorsClient;
 use crate::{Filter, GetEventsRequest, GetEventsResponse};
 use crossbeam_channel::Sender;
-use futures::executor::block_on;
 use std::path::PathBuf;
 use tokio::net::UnixStream;
 use tonic::transport::{Channel, Endpoint, Uri};
