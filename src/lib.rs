@@ -5,3 +5,6 @@ mod tetragon {
 }
 
 pub use tetragon::*;
+
+pub mod getevents;
+pub use getevents::*;
