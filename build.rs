@@ -1,3 +1,6 @@
+//! Custom Build Config
+//! Custom build to create the `tetragon.rs` file from the proto files.
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     match tonic_build::configure().build_server(false).compile(
         &[
