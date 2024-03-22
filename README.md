@@ -15,6 +15,17 @@ _This may be outdated. `cargo run` should launch the demo._
 git clone https://github.com/SubconsciousCompute/tetragon-grpc-client.git
 ```
 
+## Running Policy Manager
+
+```sh
+$ cargo run --example policy -- <Option>
+```
+
+### Options:
+- `list`
+- `add`
+- `remove`
+
 # Running demo
 
 This demo mimic command `sudo tetra --server-address unix:///var/run/tetragon/tetragon.sock getevents`
