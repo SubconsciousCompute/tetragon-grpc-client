@@ -26,6 +26,14 @@ $ cargo run --example policy -- <Option>
 - `add`
 - `remove`
 
+Create a file with some content `cat foo2thebar > /tmp/tetragon`. \
+cat the said file and see some output. \
+Then add the policy `cargo run --example policy -- add`. \
+cat the said file again and see cat gets killed before it can read. \
+Run `cargo run --example policy -- list` to list the policies. \
+Then remove the policy `cargo run --example policy -- remove`. \
+cat said file again to see that it works.
+
 # Running demo
 
 This demo mimic command `sudo tetra --server-address unix:///var/run/tetragon/tetragon.sock getevents`
